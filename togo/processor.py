@@ -12,7 +12,7 @@ class FileProcessor(Msgs):
         """
         Runs the transformation
         """
-        for root, dirnames, filenames in os.walk(dst):
+        for root, _, filenames in os.walk(dst):
             for filename in filenames:
                 filecontent = self.read_file(root + "/" + filename)
                 self.status("Processing " + filename)
@@ -58,7 +58,8 @@ class FileProcessor(Msgs):
         if begin > -1:
             word = line[begin:end + 1]
             line = line.replace(word, "")
-            #line = self.remove_blocks(line)
+            # TO FIX
+            # line = self.remove_blocks(line)
         return line
 
     def transform_includes(self, line, hugo):
@@ -109,7 +110,7 @@ class FileProcessor(Msgs):
             line = self.transform_includes(line, hugo)
             line = self.transform_static(line)
             line = self.remove_blocks(line)
-            if line != "":
+            if line:
                 #print("NEW", line)
                 new_content = new_content + "\n" + line
         return new_content
