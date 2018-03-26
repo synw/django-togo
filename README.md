@@ -3,6 +3,7 @@
 A management command to convert Django templates to Go templates. This does:
 
 - Remove all the `{% load %}` tags
+- Transform all the `{% static "foo/bar" %}` tags in  `/static/foo/bar`
 - Remove all the `{% block foo %}{% endblock %}` tags
 - Transform all the `{% include "foo.html" %}` into `{{ template  "foo.html"  . }}` 
 - Change the `{{ variable }}` to `{{ .variable }}`

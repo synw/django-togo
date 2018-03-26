@@ -58,7 +58,7 @@ class FileProcessor(Msgs):
         if begin > -1:
             word = line[begin:end + 1]
             line = line.replace(word, "")
-            line = self.remove_blocks(line)
+            #line = self.remove_blocks(line)
         return line
 
     def transform_includes(self, line, hugo):
@@ -78,6 +78,28 @@ class FileProcessor(Msgs):
             line = beginline + " . }} " + endline
         return line
 
+    def transform_static(self, line):
+        """
+        Transforms {% static "foo/bar" %} in  /static/foo/bar
+        """
+        begin = line.find("{% static '")
+        if begin > -1:
+            newt = "/static/"
+            line = line.replace("{% static '", newt)
+            end = line.find("' %}")
+            beginline = line[0:end]
+            endline = line[end + 4: len(line) + 1]
+            line = beginline + endline
+        begin = line.find('{% static "')
+        end = line.find('" %}')
+        if begin > -1:
+            newt = "/static/"
+            line = line.replace("{% static '", newt)
+            beginline = line[0:end + 1]
+            endline = line[end + 6: len(line) + 1]
+            line = beginline + endline
+        return line
+
     def process(self, filecontent, hugo):
         new_content = ""
         for line in filecontent.split("\n"):
@@ -85,6 +107,7 @@ class FileProcessor(Msgs):
             line = line.replace("{{ ", "{{ .")
             line = self.remove_load(line)
             line = self.transform_includes(line, hugo)
+            line = self.transform_static(line)
             line = self.remove_blocks(line)
             if line != "":
                 #print("NEW", line)
