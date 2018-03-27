@@ -25,5 +25,5 @@ This will copy and transform all the files in `templates` to the destination dir
 Support for [Hugo](https://gohugo.io/) static sites generator format:
 
 ```
-python3 manage.py togo destination_folder -h
+python3 manage.py togo destination_folder -hugo
 ```
